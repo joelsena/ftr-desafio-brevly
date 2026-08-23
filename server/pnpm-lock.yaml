@@ -10,13 +10,16 @@ importers:
     dependencies:
       drizzle-orm:
         specifier: 1.0.0-rc.4
-        version: 1.0.0-rc.4(@types/pg@8.21.0)(pg@8.23.0)
+        version: 1.0.0-rc.4(@types/pg@8.21.0)(pg@8.23.0)(zod@4.4.3)
       fastify:
         specifier: ^5.11.2
         version: 5.11.2
       pg:
         specifier: ^8.23.0
         version: 8.23.0
+      zod:
+        specifier: ^4.4.3
+        version: 4.4.3
     devDependencies:
       '@types/node':
         specifier: ^26.1.2
@@ -896,6 +899,9 @@ packages:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}
     engines: {node: '>=0.4'}
 
+  zod@4.4.3:
+    resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
+
 snapshots:
 
   '@drizzle-team/brocli@0.12.0': {}
@@ -1187,10 +1193,11 @@ snapshots:
       get-tsconfig: 4.14.1
       jiti: 2.7.0
 
-  drizzle-orm@1.0.0-rc.4(@types/pg@8.21.0)(pg@8.23.0):
+  drizzle-orm@1.0.0-rc.4(@types/pg@8.21.0)(pg@8.23.0)(zod@4.4.3):
     optionalDependencies:
       '@types/pg': 8.21.0
       pg: 8.23.0
+      zod: 4.4.3
 
   esbuild@0.25.12:
     optionalDependencies:
@@ -1467,3 +1474,5 @@ snapshots:
   undici-types@8.3.0: {}
 
   xtend@4.0.2: {}
+
+  zod@4.4.3: {}

@@ -1,20 +1,15 @@
-import Fastify from "fastify";
+import { buildApp } from "./app.ts";
+import { env } from "./config/env.ts";
 
-const app = Fastify({
-  logger: true,
-});
-
-app.get("/", async () => {
-  return {
-    message: "It's working!!!",
-  };
-});
+const app = buildApp();
 
 try {
   await app.listen({
-    port: 3333,
+    port: env.PORT,
     host: "0.0.0.0",
   });
+
+  app.log.info("Servidor Inicializado");
 } catch (error) {
   app.log.error(error);
   process.exit(1);

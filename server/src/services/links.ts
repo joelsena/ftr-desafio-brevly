@@ -11,8 +11,23 @@ export function getLinks() {
   return db.select().from(links);
 }
 
-export function getLink(shortUrl: string) {
-  return db.select().from(links).where(eq(links.shortUrl, shortUrl));
+export async function getLink(shortUrl: string) {
+  const [link] = await db
+    .select()
+    .from(links)
+    .where(eq(links.shortUrl, shortUrl));
+
+  if (link) {
+    const accessCount = link.accessCount;
+
+    return db
+      .update(links)
+      .set({ accessCount: accessCount + 1 })
+      .where(eq(links.id, link.id))
+      .returning();
+  }
+
+  return [];
 }
 
 export function deleteLink(id: string) {

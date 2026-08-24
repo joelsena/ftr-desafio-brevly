@@ -1,6 +1,9 @@
 import Fastify from "fastify";
+import {
+  validatorCompiler,
+  serializerCompiler,
+} from "@fastify/type-provider-zod";
 
-import { databasePlugin } from "./plugins/database.ts";
 import { linkRoutes } from "./routes/links.ts";
 
 export function buildApp() {
@@ -12,7 +15,8 @@ export function buildApp() {
     prefix: "/links",
   });
 
-  app.register(databasePlugin);
+  app.setValidatorCompiler(validatorCompiler);
+  app.setSerializerCompiler(serializerCompiler);
 
   return app;
 }

@@ -4,7 +4,8 @@ import * as z from "zod";
 import {
   createLink,
   deleteLink,
-  getLink,
+  exportLinks,
+  getLinkAndIncrement,
   getLinks,
 } from "../services/links.ts";
 
@@ -21,13 +22,13 @@ export const linkRoutes: FastifyPluginAsyncZod = async (app) => {
     async (request, reply) => {
       const { shortUrl } = request.params;
 
-      const [link] = await getLink(shortUrl);
+      try {
+        const [link] = await getLinkAndIncrement(shortUrl);
 
-      if (!link) {
+        return reply.status(201).send(link);
+      } catch (error) {
         return reply.status(404).send({ message: "Url não encontrado!" });
       }
-
-      return reply.status(201).send(link);
     },
   );
 
@@ -83,4 +84,17 @@ export const linkRoutes: FastifyPluginAsyncZod = async (app) => {
       }
     },
   );
+
+  app.post("/export", async (_, reply) => {
+    try {
+      const csvPublicUrl = await exportLinks();
+
+      return reply.status(200).send({ publicUrl: csvPublicUrl });
+    } catch (error) {
+      console.error(error);
+      return reply
+        .status(400)
+        .send({ message: "Não foi possível exportar arquivo" });
+    }
+  });
 };

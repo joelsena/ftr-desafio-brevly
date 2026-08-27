@@ -17,7 +17,7 @@ export default function RedirectPage() {
           </p>
           <p className="text-md text-gray-500 text-center">
             Não foi redirecionado?{" "}
-            <a href="/" className="text-base underline">
+            <a href="/" className="text-blue-base underline">
               Acesse aqui{" "}
             </a>
           </p>

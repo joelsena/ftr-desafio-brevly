@@ -9,7 +9,7 @@ export default function NotFoundPage() {
         <p className="text-md text-gray-500 text-center">
           O link que você está tentando acessar não existe, foi removido ou é
           uma URL inválida. Saiba mais em{" "}
-          <a href="/" className="text-base underline">
+          <a href="/" className="text-blue-base underline">
             brev.ly
           </a>
           .

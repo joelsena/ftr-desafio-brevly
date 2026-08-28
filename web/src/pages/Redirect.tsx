@@ -1,9 +1,22 @@
-// import { useParams } from "react-router";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useParams } from "react-router";
 
 import LogoIcon from "../assets/logo_icon.svg";
+import { getLink } from "../services/links";
 
 export default function RedirectPage() {
-  // const { shortUrl } = useParams<{ shortUrl: string }>();
+  const { shortUrl } = useParams<{ shortUrl: string }>();
+  const queryClient = useQueryClient();
+
+  const query = useQuery({
+    queryKey: ["link"],
+    queryFn: async () => getLink(shortUrl!),
+  });
+
+  if (query.isSuccess) {
+    queryClient.invalidateQueries({ queryKey: ["links"] });
+    window.location.href = query.data?.originalUrl;
+  }
 
   return (
     <div className="flex flex-col items-center flex-1">

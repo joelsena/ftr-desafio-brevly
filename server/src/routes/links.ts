@@ -78,6 +78,7 @@ export const linkRoutes: FastifyPluginAsyncZod = async (app) => {
           .status(203)
           .send({ message: "Recurso removido com sucesso" });
       } catch (error) {
+        console.error(error);
         return reply
           .status(401)
           .send({ message: "Não foi possível remover o link" });

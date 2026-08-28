@@ -1,5 +1,5 @@
 import { Upload } from "@aws-sdk/lib-storage";
-import { eq, sql } from "drizzle-orm";
+import { asc, eq, sql } from "drizzle-orm";
 
 import { r2Client } from "../storage/r2.ts";
 import { links } from "../db/schema.ts";
@@ -11,7 +11,7 @@ export function createLink(originalUrl: string, shortUrl: string) {
 }
 
 export function getLinks() {
-  return db.select().from(links);
+  return db.select().from(links).orderBy(asc(links.createdAt));
 }
 
 export async function getLinkAndIncrement(shortUrl: string) {

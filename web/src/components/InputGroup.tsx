@@ -18,7 +18,6 @@ export function InputGroup({ label, className, error, ...props }: InputProps) {
         className={twMerge(
           "border border-gray-300 rounded-lg px-4 py-3 text-gray-600 text-md font-normal placeholder:text-gray-400",
           "group-data-[error=true]:border-danger group-focus-within:border-blue-base focus:outline-none focus-visible:outline-none",
-          "group-focus-within:border-2",
           className,
         )}
         {...props}

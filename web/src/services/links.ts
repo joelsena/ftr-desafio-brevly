@@ -1,6 +1,6 @@
 import { api } from "./api";
 
-type Link = {
+export type Link = {
   id: string;
   originalUrl: string;
   shortUrl: string;

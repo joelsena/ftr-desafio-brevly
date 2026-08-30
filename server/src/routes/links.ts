@@ -54,7 +54,9 @@ export const linkRoutes: FastifyPluginAsyncZod = async (app) => {
 
         return reply.status(201).send(link);
       } catch (error) {
-        return reply.status(409).send({ message: "ShortUrl já existe!" });
+        return reply
+          .status(409)
+          .send({ message: "Essa URL encurtada já existe." });
       }
     },
   );

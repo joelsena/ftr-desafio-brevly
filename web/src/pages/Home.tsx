@@ -5,14 +5,17 @@ import {
 } from "@phosphor-icons/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { Fragment, useState } from "react";
+import { useForm } from "react-hook-form";
+import { motion } from "motion/react";
+import axios from "axios";
 import * as z from "zod";
 
 import { exportLinks, getLinks, postLink } from "../services/links";
 import { InputGroup } from "../components/InputGroup";
 import { LinkItem } from "../components/LinkItem";
 import { Button } from "../components/Button";
+import { useToast } from "../context/toast";
 import Logo from "../assets/logo.svg";
 
 const formSchema = z.object({
@@ -34,12 +37,28 @@ function Home() {
 
   const queryClient = useQueryClient();
 
+  const { addToast } = useToast();
+
   const query = useQuery({ queryKey: ["links"], queryFn: getLinks });
 
   const postLinkMut = useMutation({
     mutationFn: postLink,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["links"] });
+
+      addToast({
+        title: "Link salvo",
+        detail: "Link salvo com sucesso",
+        type: "success",
+      });
+    },
+    onError: (error) => {
+      if (axios.isAxiosError<{ message: string }>(error))
+        addToast({
+          title: "Erro no cadatro",
+          detail: error.response?.data.message ?? "",
+          type: "error",
+        });
     },
   });
 
@@ -51,6 +70,7 @@ function Home() {
   } = useForm({
     resolver: zodResolver(formSchema),
   });
+  console.log({ isSubmitting });
 
   function onSubmit(data: FormSchemaValues) {
     const { originalUrl, shortUrl } = data;
@@ -72,8 +92,8 @@ function Home() {
     <div className="flex flex-col pt-8 pb-2 sm:pt-22 text-gray-500 w-[min(1080px,100%)] mx-auto">
       <img className="mb-6 sm:mb-8 w-24 h-auto mx-auto sm:mx-0" src={Logo} />
 
-      <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 w-full justify-center items-center">
-        <div className="flex flex-col bg-gray-100 rounded-lg w-[min(380px,100%)] p-6 sm:p-8 gap-y-5 sm:gap-y-6 flex-none">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 w-full">
+        <div className="flex flex-col bg-gray-100 rounded-lg w-[min(380px,100%)] p-6 sm:p-8 gap-y-5 sm:gap-y-6 flex-none mb-auto">
           <p className="text-lg text-gray-600">Novo link</p>
 
           <form
@@ -90,17 +110,38 @@ function Home() {
             <InputGroup
               label="Link encurtado"
               placeholder="brev.ly/"
+              prefix="brev.ly/"
               error={errors.shortUrl?.message}
               {...register("shortUrl")}
             />
 
-            <Button className="mt-2" type="submit" disabled={isSubmitting}>
-              Salvar link
+            <Button
+              className="mt-2"
+              type="submit"
+              disabled={postLinkMut.isPending}
+            >
+              {postLinkMut.isPending ? "Salvando..." : "Salvar link"}
             </Button>
           </form>
         </div>
 
-        <div className="bg-gray-100 rounded-lg p-6 sm:p-8 mb-auto w-full">
+        <div className="bg-gray-100 rounded-lg p-6 sm:p-8 mb-auto w-full relative">
+          {query.isFetching && (
+            <div className="w-full overflow-hidden absolute left-0 top-0 rounded-full">
+              <motion.div
+                className="h-1 w-1/3 bg-blue-base rounded-full"
+                animate={{
+                  x: ["-100%", "300%"],
+                }}
+                transition={{
+                  duration: 1,
+                  ease: "easeInOut",
+                  repeat: Infinity,
+                }}
+              />
+            </div>
+          )}
+
           <div className="flex items-center justify-between">
             <p className="text-lg text-gray-600">Meus links</p>
 
@@ -139,10 +180,16 @@ function Home() {
             </div>
           ) : (
             <div className="flex flex-col justify-center items-center py-4">
-              <LinkIcon className="mb-3" size={32} />
+              {query.isLoading ? (
+                <SpinnerIcon className="mb-3 animate-spin" size={32} />
+              ) : (
+                <LinkIcon className="mb-3" size={32} />
+              )}
 
               <p className="text-xs uppercase text-center">
-                ainda não existem links cadastrados
+                {query.isLoading
+                  ? "carregando links..."
+                  : "ainda não existem links cadastrados"}
               </p>
             </div>
           )}

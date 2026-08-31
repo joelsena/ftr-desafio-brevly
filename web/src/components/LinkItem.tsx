@@ -5,6 +5,7 @@ import { twMerge } from "tailwind-merge";
 import { deleteLink } from "../services/links";
 import { Button } from "./Button";
 import { env } from "../env";
+import { useToast } from "../context/toast";
 
 interface LinkProps {
   id: string;
@@ -23,11 +24,19 @@ export function LinkItem({
 }: LinkProps) {
   const queryClient = useQueryClient();
 
+  const { addToast } = useToast();
+
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(
         `${env.VITE_FRONTEND_URL}/${shortUrl}`,
       );
+
+      addToast({
+        title: "Link copiado com sucesso",
+        detail: `O link "${shortUrl}" foi copiado para a área de transferência.`,
+        type: "info",
+      });
     } catch (err) {
       console.error("Failed to copy text: ", err);
     }
@@ -47,23 +56,23 @@ export function LinkItem({
   return (
     <div
       className={twMerge(
-        "flex justify-between items-center text-sm text-gray-500",
+        "flex justify-between items-center text-sm text-gray-500 gap-2",
         className,
       )}
     >
       <div>
         <a
-          className="text-md text-blue-base"
+          className="block text-md text-blue-base w-35 sm:w-auto truncate"
           href={`/${shortUrl}`}
           target="_blank"
           rel="noreferer noopener"
         >
           {env.VITE_FRONTEND_URL}/{shortUrl}
         </a>
-        <p>{originalUrl}</p>
+        <p className="w-35 sm:w-auto truncate">{originalUrl}</p>
       </div>
 
-      <div className="flex items-center gap-5">
+      <div className="flex items-center gap-5 flex-none">
         <p>{accessCount} acessos</p>
 
         <div className="flex gap-1 items-center">

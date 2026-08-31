@@ -17,6 +17,7 @@ import { LinkItem } from "../components/LinkItem";
 import { Button } from "../components/Button";
 import { useToast } from "../context/toast";
 import Logo from "../assets/logo.svg";
+import { twMerge } from "tailwind-merge";
 
 const formSchema = z.object({
   originalUrl: z.url("Infome uma URL válida."),
@@ -162,37 +163,44 @@ function Home() {
 
           <span className="block h-px w-full bg-gray-200 my-4" />
 
-          {query.data ? (
-            <div className="flex flex-col">
-              {query.data.map((link, idx) => (
-                <Fragment key={link.id}>
-                  {idx > 0 && (
-                    <span className="block h-px w-full bg-gray-200 my-4" />
-                  )}
-                  <LinkItem
-                    id={link.id}
-                    originalUrl={link.originalUrl}
-                    shortUrl={link.shortUrl}
-                    accessCount={link.accessCount}
-                  />
-                </Fragment>
-              ))}
-            </div>
-          ) : (
-            <div className="flex flex-col justify-center items-center py-4">
-              {query.isLoading ? (
-                <SpinnerIcon className="mb-3 animate-spin" size={32} />
-              ) : (
-                <LinkIcon className="mb-3" size={32} />
-              )}
+          <div
+            className={twMerge(
+              "max-h-116 overflow-y-auto",
+              "[&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-blue-base [&::-webkit-scrollbar-thumb:hover]:bg-blue-dark",
+            )}
+          >
+            {query.data ? (
+              <div className="flex flex-col">
+                {query.data.map((link, idx) => (
+                  <Fragment key={link.id}>
+                    {idx > 0 && (
+                      <span className="block h-px w-full bg-gray-200 my-4" />
+                    )}
+                    <LinkItem
+                      id={link.id}
+                      originalUrl={link.originalUrl}
+                      shortUrl={link.shortUrl}
+                      accessCount={link.accessCount}
+                    />
+                  </Fragment>
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col justify-center items-center py-4">
+                {query.isLoading ? (
+                  <SpinnerIcon className="mb-3 animate-spin" size={32} />
+                ) : (
+                  <LinkIcon className="mb-3" size={32} />
+                )}
 
-              <p className="text-xs uppercase text-center">
-                {query.isLoading
-                  ? "carregando links..."
-                  : "ainda não existem links cadastrados"}
-              </p>
-            </div>
-          )}
+                <p className="text-xs uppercase text-center">
+                  {query.isLoading
+                    ? "carregando links..."
+                    : "ainda não existem links cadastrados"}
+                </p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

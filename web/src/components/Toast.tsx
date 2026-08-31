@@ -24,7 +24,7 @@ export function Toast(props: Toast) {
 
   const styleByType = {
     error: "text-danger bg-[color-mix(in_srgb,#B12C4D_30%,white)]",
-    info: "text-blue-base bg-[color-mix(in_srgb,#2C46B1_30%,white)]",
+    info: "text-blue-500 bg-[color-mix(in_srgb,var(--color-blue-300)_30%,white)]",
     success: "text-green-800 bg-[color-mix(in_srgb,#016630_30%,white)]",
   };
 
@@ -42,7 +42,7 @@ export function Toast(props: Toast) {
   return (
     <motion.div
       className={twMerge(
-        "flex items-center rounded-lg p-4 gap-2 transition-opacity duration-300 opacity-0",
+        "flex items-center rounded-lg p-4 gap-2 transition-opacity duration-300 opacity-0 shadow",
         styleByType[props.type],
       )}
       initial={{
@@ -61,7 +61,7 @@ export function Toast(props: Toast) {
         duration: 0.3,
       }}
     >
-      <Icon size={20} weight="fill" />
+      <Icon className="flex-none" size={20} weight="fill" />
 
       <div className="flex flex-col text-md">
         <p className="font-bold">{props.title}</p>

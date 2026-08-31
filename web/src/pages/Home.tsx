@@ -67,11 +67,10 @@ function Home() {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm({
     resolver: zodResolver(formSchema),
   });
-  console.log({ isSubmitting });
 
   function onSubmit(data: FormSchemaValues) {
     const { originalUrl, shortUrl } = data;
@@ -169,7 +168,7 @@ function Home() {
               "[&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-blue-base [&::-webkit-scrollbar-thumb:hover]:bg-blue-dark",
             )}
           >
-            {query.data ? (
+            {query.data && query.data.length ? (
               <div className="flex flex-col">
                 {query.data.map((link, idx) => (
                   <Fragment key={link.id}>

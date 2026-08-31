@@ -18,7 +18,7 @@ export function buildApp() {
   });
 
   app.register(linkRoutes, {
-    prefix: "/links",
+    prefix: "/api/links",
   });
 
   app.setValidatorCompiler(validatorCompiler);

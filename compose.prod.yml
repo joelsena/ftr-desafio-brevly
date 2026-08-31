@@ -1,0 +1,12 @@
+services:
+  server:
+    build:
+      target: production
+    volumes: !override []
+
+  web:
+    build:
+      target: production
+    ports:
+      - "80:80"
+    volumes: !override []

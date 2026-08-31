@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "description": "server para o desafio Brev.ly",
-  "main": "server.js",
+  "main": "src/server.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "start": "tsx src/server.ts",

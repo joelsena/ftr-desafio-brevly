@@ -4,7 +4,6 @@ import { twMerge } from "tailwind-merge";
 
 import { deleteLink } from "../services/links";
 import { Button } from "./Button";
-import { env } from "../env";
 import { useToast } from "../context/toast";
 
 interface LinkProps {
@@ -29,7 +28,7 @@ export function LinkItem({
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(
-        `${env.VITE_FRONTEND_URL}/${shortUrl}`,
+        `${window.location.host}/${shortUrl}`,
       );
 
       addToast({
@@ -67,7 +66,7 @@ export function LinkItem({
           target="_blank"
           rel="noreferer noopener"
         >
-          {env.VITE_FRONTEND_URL}/{shortUrl}
+          {window.location.host}/{shortUrl}
         </a>
         <p className="w-35 sm:w-auto truncate">{originalUrl}</p>
       </div>

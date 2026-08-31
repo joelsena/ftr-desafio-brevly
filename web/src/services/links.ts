@@ -9,12 +9,12 @@ export type Link = {
 };
 
 export async function getLink(shortUrl: string) {
-  const res = await api.get<Link>(`/links/${shortUrl}`);
+  const res = await api.get<Link>(`/api/links/${shortUrl}`);
   return res.data;
 }
 
 export async function getLinks() {
-  const res = await api.get<Link[]>("/links/");
+  const res = await api.get<Link[]>("/api/links/");
   return res.data;
 }
 
@@ -22,16 +22,16 @@ export async function postLink(body: {
   shortUrl: string;
   originalUrl: string;
 }) {
-  const res = await api.post<Link>("/links/", body);
+  const res = await api.post<Link>("/api/links/", body);
   return res.data;
 }
 
 export async function deleteLink(linkId: string) {
-  const res = await api.delete(`/links/${linkId}`);
+  const res = await api.delete(`/api/links/${linkId}`);
   return res.data;
 }
 
 export async function exportLinks() {
-  const res = await api.post<{ publicUrl: string }>("/links/export");
+  const res = await api.post<{ publicUrl: string }>("/api/links/export");
   return res.data;
 }

@@ -18,6 +18,7 @@ WORKDIR /app
 
 COPY . .
 
+ENV CI=true
 ENV NODE_ENV=development
 
 EXPOSE 5173

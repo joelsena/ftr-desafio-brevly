@@ -13,11 +13,13 @@ export default function RedirectPage() {
     queryFn: async () => getLink(shortUrl!),
   });
 
-  if (query.isSuccess && query.data.originalUrl) {
-    queryClient.invalidateQueries({ queryKey: ["links"] });
-    window.location.href = query.data.originalUrl;
-  } else {
-    window.location.href = "/not/found";
+  if (!query.isLoading) {
+    if (query.isSuccess && query.data.originalUrl) {
+      queryClient.invalidateQueries({ queryKey: ["links"] });
+      window.location.href = query.data.originalUrl;
+    } else {
+      window.location.href = "/not/found";
+    }
   }
 
   return (
